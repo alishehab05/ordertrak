@@ -41,6 +41,27 @@
       "total": 9.5,
       "status": "Delivered",
       "id": 2
+    },
+    {
+      "customer": "Alex Morgan",
+      "address": "saddeqin",
+      "createdAt": "2026-09-24T16:14:22.490Z",
+      "items": [
+        {
+          "name": "Tomatoes (1 kg)",
+          "price": 3,
+          "packed": true
+        },
+        {
+          "name": "Strawberries (box)",
+          "price": 5,
+          "packed": true
+        }
+      ],
+      "deliveryFee": 5,
+      "total": 13,
+      "status": "Delivered",
+      "id": 3
     }
   ]
 }
