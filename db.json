@@ -1,0 +1,46 @@
+{
+  "orders": [
+    {
+      "customer": "Alex Morgan",
+      "address": "deiraames",
+      "createdAt": "2026-09-24T16:00:23.127Z",
+      "items": [
+        {
+          "name": "Rice (2 kg)",
+          "price": 6,
+          "packed": true
+        },
+        {
+          "name": "Spinach (bag)",
+          "price": 3.25,
+          "packed": true
+        },
+        {
+          "name": "Strawberries (box)",
+          "price": 5,
+          "packed": true
+        }
+      ],
+      "deliveryFee": 5,
+      "total": 19.25,
+      "status": "Delivered",
+      "id": 1
+    },
+    {
+      "customer": "Alex Morgan",
+      "address": "bayyad",
+      "createdAt": "2026-09-24T16:01:15.975Z",
+      "items": [
+        {
+          "name": "Apples (1 kg)",
+          "price": 4.5,
+          "packed": true
+        }
+      ],
+      "deliveryFee": 5,
+      "total": 9.5,
+      "status": "Delivered",
+      "id": 2
+    }
+  ]
+}

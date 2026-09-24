@@ -1,0 +1,185 @@
+/* These variables define the single white-and-green visual theme used everywhere. */
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #17352b;
+  background: #f7fbf8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --green: #138a5b;
+  --green-dark: #0b6844;
+  --green-soft: #e8f6ef;
+  --ink: #17352b;
+  --muted: #6b7e75;
+  --line: #dcebe2;
+  --white: #ffffff;
+  --shadow: 0 18px 50px rgba(20, 78, 53, 0.08);
+}
+
+/* These base rules keep sizing and page spacing consistent across every screen. */
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: #f7fbf8; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+/* This is the shared navigation bar and brand treatment. */
+.site-header { align-items: center; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; margin: 0 auto; max-width: 1180px; padding: 22px 28px; }
+.brand { align-items: center; background: transparent; border: 0; color: var(--ink); display: flex; font-size: 1.12rem; font-weight: 750; gap: 10px; padding: 0; }
+.brand-mark { align-items: center; background: var(--green); border-radius: 10px; color: white; display: flex; height: 34px; justify-content: center; width: 34px; }
+.header-label { color: var(--muted); font-size: .88rem; }
+
+/* These shared typography and card rules create the calm visual hierarchy. */
+h1, h2, h3, p { margin-top: 0; }
+h1 { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.06em; line-height: 1; margin-bottom: 18px; }
+h2 { font-size: 1.45rem; letter-spacing: -.03em; margin-bottom: 8px; }
+h3 { margin-bottom: 6px; }
+p { color: var(--muted); line-height: 1.6; }
+.card { background: var(--white); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
+.eyebrow { align-items: center; color: var(--green-dark); display: flex; font-size: .76rem; font-weight: 800; gap: 7px; letter-spacing: .1em; margin-bottom: 12px; text-transform: uppercase; }
+
+/* This layout gives login and sign-up a matching two-column presentation. */
+.auth-layout { align-items: center; display: grid; gap: clamp(40px, 8vw, 120px); grid-template-columns: minmax(0, 1fr) minmax(320px, 420px); margin: 0 auto; max-width: 1080px; min-height: calc(100vh - 81px); padding: 64px 28px; }
+.auth-intro { max-width: 530px; }
+.auth-intro > p { font-size: 1.1rem; max-width: 470px; }
+.intro-points { display: grid; gap: 14px; margin-top: 32px; }
+.intro-points span { align-items: center; color: var(--ink); display: flex; font-weight: 650; gap: 10px; }
+.intro-points svg { color: var(--green); }
+.auth-card { padding: 32px; }
+.card-heading { margin-bottom: 26px; }
+.card-heading p:last-child { margin-bottom: 0; }
+
+/* These form styles make both authentication and order forms easy to scan. */
+form { display: grid; gap: 18px; }
+label, legend { color: var(--ink); font-size: .86rem; font-weight: 700; }
+label { display: grid; gap: 8px; }
+input { background: #fbfefc; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); outline: 0; padding: 12px 14px; width: 100%; }
+input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(19, 138, 91, .12); }
+.form-error { background: #fff6f4; border: 1px solid #f1d9d3; border-radius: 9px; color: #a04a3c; font-size: .84rem; margin: 0; padding: 10px 12px; }
+fieldset { border: 0; margin: 0; padding: 0; }
+select { background: #fbfefc; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); outline: 0; padding: 12px 14px; width: 100%; }
+select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(19, 138, 91, .12); }
+
+/* These button styles provide the small, reusable action language for the app. */
+.primary-button, .secondary-button, .danger-button, .location-button { align-items: center; border-radius: 10px; display: inline-flex; font-weight: 750; gap: 8px; justify-content: center; padding: 12px 17px; }
+.primary-button { background: var(--green); border: 1px solid var(--green); color: white; }
+.primary-button:hover { background: var(--green-dark); }
+.secondary-button { background: var(--green-soft); border: 1px solid var(--green-soft); color: var(--green-dark); }
+.danger-button { background: #fff6f4; border: 1px solid #f1d9d3; color: #a04a3c; }
+.location-button { background: transparent; border: 1px solid var(--line); color: var(--green-dark); width: 100%; }
+.text-button { background: none; border: 0; color: var(--green-dark); font-weight: 750; padding: 0; }
+.switch-text { font-size: .88rem; margin: 24px 0 0; text-align: center; }
+
+/* These dashboard rules align customer and driver content into the same visual shell. */
+.dashboard-page { margin: 0 auto; max-width: 1080px; padding: 64px 28px; }
+.dashboard-heading, .section-heading { align-items: flex-start; display: flex; justify-content: space-between; gap: 20px; }
+.dashboard-heading { margin-bottom: 34px; }
+.dashboard-heading h1 { margin-bottom: 10px; }
+.dashboard-heading p:last-child { margin-bottom: 0; }
+.dashboard-grid { display: grid; gap: 22px; grid-template-columns: minmax(0, 1.5fr) minmax(280px, .8fr); }
+.orders-column { display: grid; gap: 22px; }
+.order-card, .action-card, .driver-card { padding: 28px; }
+.status { align-items: center; border-radius: 50px; display: inline-flex; font-size: .8rem; font-weight: 750; gap: 6px; padding: 7px 11px; white-space: nowrap; }
+.status-pending, .status-order-placed { background: #fff8e7; color: #956a13; }
+.status-pending-for-confirmation, .status-confirmed, .status-processing { background: var(--green-soft); color: var(--green-dark); }
+.status-rejected, .status-declined { background: #fff6f4; color: #a04a3c; }
+.order-detail { align-items: center; border-top: 1px solid var(--line); display: flex; gap: 14px; margin-top: 20px; padding-top: 18px; }
+.order-detail svg { color: var(--green); }
+.order-detail div { display: grid; gap: 3px; }
+.order-detail span, .driver-order p { color: var(--muted); font-size: .88rem; }
+.progress-line { background: #e7eee9; border-radius: 10px; height: 7px; margin: 32px 0 9px; overflow: hidden; }
+.progress-filled { background: var(--green); border-radius: inherit; display: block; height: 100%; width: 34%; }
+.progress-labels { color: var(--muted); display: flex; font-size: .7rem; justify-content: space-between; }
+.action-card { background: var(--green); color: white; }
+.action-card p, .action-card .eyebrow { color: #d4f2e2; }
+.action-card .primary-button { background: white; color: var(--green-dark); margin-top: 10px; }
+.mini-form { margin-top: 20px; }
+.mini-form label { color: white; }
+.mini-form input { background: rgba(255,255,255,.95); border: 0; }
+.mini-form select { background: rgba(255,255,255,.95); border: 0; }
+.mini-form .secondary-button { background: #d4f2e2; }
+.mini-form fieldset { border: 0; margin: 0; padding: 0; }
+.mini-form legend { color: #d4f2e2; margin-bottom: 8px; }
+.grocery-options { display: grid; gap: 7px; }
+.grocery-option { align-items: center; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; color: white; display: grid; gap: 8px; grid-template-columns: 18px 1fr auto; padding: 9px; }
+.grocery-option input { accent-color: var(--green-dark); height: 16px; padding: 0; width: 16px; }
+.grocery-option strong { color: #d4f2e2; font-size: .82rem; }
+.delivery-fee { color: #d4f2e2; font-size: .88rem; margin-bottom: 0; }
+.price-list { border-top: 1px solid var(--line); display: grid; gap: 8px; margin-top: 22px; padding-top: 17px; }
+.price-list div { color: var(--muted); display: flex; font-size: .88rem; justify-content: space-between; }
+.price-list strong { color: var(--ink); }
+.price-list .price-total { border-top: 1px solid var(--line); color: var(--ink); font-size: 1rem; font-weight: 800; margin-top: 5px; padding-top: 12px; }
+.price-total strong { color: var(--green-dark); }
+.packed-item span { color: var(--green-dark); text-decoration: line-through; }
+.packing-list { border-top: 1px solid var(--line); display: grid; gap: 10px; margin-top: 20px; padding-top: 20px; }
+.packing-item { align-items: center; background: var(--green-soft); border: 1px solid var(--line); border-radius: 9px; color: var(--ink); display: grid; gap: 8px; grid-template-columns: 18px 1fr auto; padding: 10px; }
+.packing-item input { accent-color: var(--green); height: 16px; padding: 0; width: 16px; }
+.packing-item b { color: var(--green-dark); font-size: .82rem; }
+.timeline { margin: 26px 0 4px; }
+.timeline-item { display: grid; grid-template-columns: 42px 28px 1fr; min-height: 74px; }
+.timeline-time { color: var(--muted); font-size: .72rem; padding-top: 3px; text-align: right; }
+.timeline-track { align-items: center; display: flex; flex-direction: column; position: relative; }
+.timeline-circle { align-items: center; background: #edf1ef; border-radius: 50%; color: white; display: flex; height: 25px; justify-content: center; position: relative; width: 25px; z-index: 1; }
+.timeline-completed .timeline-circle { background: var(--green); }
+.timeline-line { background: #e2e9e5; height: 100%; position: absolute; top: 25px; width: 2px; }
+.timeline-completed .timeline-line { background: var(--green); }
+.timeline-copy { display: grid; gap: 3px; padding: 1px 0 18px 12px; }
+.timeline-copy strong { color: var(--ink); font-size: .92rem; }
+.timeline-copy span { color: var(--muted); font-size: .8rem; line-height: 1.45; }
+.order-actions { display: flex; gap: 10px; margin-top: 24px; }
+.order-actions > * { flex: 1; }
+.delete-button { margin-top: 24px; }
+.delivery-waiting { background: var(--green-soft); border-radius: 9px; color: var(--green-dark); font-size: .82rem; margin: 14px 0 0; padding: 10px 12px; }
+.empty-card { padding: 34px 28px; text-align: center; }
+.empty-card svg { color: var(--green); }
+.empty-card p { margin-bottom: 0; }
+.driver-card { max-width: 720px; }
+.driver-order { align-items: center; border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); display: flex; gap: 16px; margin: 22px 0; padding: 22px 0; }
+.driver-order p { margin-bottom: 0; }
+.driver-icon { align-items: center; background: var(--green-soft); border-radius: 14px; color: var(--green); display: flex; height: 52px; justify-content: center; width: 52px; }
+.driver-actions { display: flex; gap: 12px; }
+.driver-actions .primary-button { flex: 1; }
+.location-button { margin-top: 14px; }
+.new-order-button { margin-bottom: 22px; }
+.driver-create-card { margin-bottom: 22px; }
+
+/* These responsive rules keep the single theme usable on smaller screens. */
+@media (max-width: 760px) {
+  .site-header { padding: 18px 20px; }
+  .header-label { display: none; }
+  .auth-layout, .dashboard-page { padding: 36px 16px; }
+  .auth-layout, .dashboard-grid { grid-template-columns: 1fr; }
+  .auth-intro { max-width: none; }
+  .auth-intro h1 { font-size: 2.6rem; }
+  .dashboard-heading { align-items: flex-start; flex-direction: column; }
+  .dashboard-heading .secondary-button { width: 100%; }
+  .section-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .section-heading .status { align-self: flex-start; }
+  .order-card, .action-card, .driver-card { border-radius: 16px; }
+  .timeline-item { grid-template-columns: 34px 28px minmax(0, 1fr); }
+  .timeline-copy { padding-left: 10px; }
+  .price-list div { gap: 14px; }
+  .price-list div span { min-width: 0; overflow-wrap: anywhere; }
+  .driver-order { align-items: flex-start; }
+}
+
+/* This final rule stacks dashboard actions for narrow phone screens. */
+@media (max-width: 420px) {
+  /* These compact dimensions prevent horizontal scrolling on small phones. */
+  .site-header { padding: 15px 16px; }
+  .brand { font-size: 1rem; }
+  .brand-mark { height: 31px; width: 31px; }
+  .auth-card, .order-card, .action-card, .driver-card { padding: 22px; }
+  .auth-intro h1 { font-size: 2.25rem; }
+  .auth-intro > p { font-size: 1rem; }
+  .auth-layout { gap: 30px; padding-top: 30px; }
+  .dashboard-page { padding-top: 30px; }
+  .dashboard-heading h1 { font-size: 2.35rem; }
+  .driver-actions { flex-direction: column-reverse; }
+  .order-actions { flex-direction: column; }
+  .progress-labels { font-size: .62rem; }
+  .primary-button, .secondary-button, .danger-button, .location-button { min-height: 46px; width: 100%; }
+  .grocery-option { grid-template-columns: 18px minmax(0, 1fr) auto; }
+  .grocery-option span { overflow-wrap: anywhere; }
+  .timeline-time { font-size: .65rem; }
+  .timeline-copy strong { font-size: .86rem; }
+  .timeline-copy span { font-size: .76rem; }
+}
