@@ -116,14 +116,17 @@ function normalizeOrder(order: Order): Order {
 }
 
 // This component renders the shared brand header used on every screen.
-function Header({ onNavigate }: { onNavigate: (screen: Screen) => void }) {
+function Header({ onNavigate, onLogout, isAuthenticated }: { onNavigate: (screen: Screen) => void; onLogout: () => void; isAuthenticated: boolean }) {
   return (
     <header className="site-header">
       <button className="brand" onClick={() => onNavigate('login')} aria-label="Go to login">
         <span className="brand-mark"><Leaf size={18} /></span>
         <span>GreenRoute</span>
       </button>
-      <span className="header-label">Simple order tracking</span>
+      <div className="header-actions">
+        <span className="header-label">Simple order tracking</span>
+        {isAuthenticated && <button className="header-logout" onClick={onLogout}>Sign out</button>}
+      </div>
     </header>
   );
 }
@@ -239,10 +242,10 @@ function CustomerOrder({ order }: { order: Order }) {
 }
 
 // This component renders the customer's grocery selection and order list.
-function CustomerDashboard({ orders, onLogout }: { orders: Order[]; onLogout: () => void }) {
+function CustomerDashboard({ orders }: { orders: Order[] }) {
   // This renders only saved orders and their progress because customers cannot edit orders.
   return (
-    <DashboardShell title="Customer dashboard" subtitle="Track your deliveries from one simple view." onLogout={onLogout}>
+    <DashboardShell title="Customer dashboard" subtitle="Track your deliveries from one simple view.">
       <section className="orders-column">
         {orders.length === 0 ? <div className="card empty-card"><Package size={24} /><h2>No orders yet</h2><p>Your driver-created orders will appear here.</p></div> : orders.map((order) => <CustomerOrder key={order.id} order={order} />)}
       </section>
@@ -251,19 +254,28 @@ function CustomerDashboard({ orders, onLogout }: { orders: Order[]; onLogout: ()
 }
 
 // This component renders driver orders and hides rejected orders only from the driver's view.
-function DriverDashboard({ orders, onCreateOrder, onStatusChange, onTogglePacked, onLogout }: { orders: Order[]; onCreateOrder: (order: Omit<Order, 'id'>) => void; onStatusChange: (order: Order, status: OrderStatus) => void; onTogglePacked: (order: Order, itemIndex: number) => void; onLogout: () => void }) {
+function DriverDashboard({ orders, onCreateOrder, onStatusChange, onTogglePacked }: { orders: Order[]; onCreateOrder: (order: Omit<Order, 'id'>) => Promise<boolean>; onStatusChange: (order: Order, status: OrderStatus) => void; onTogglePacked: (order: Order, itemIndex: number) => void }) {
   // These states control the expandable new-order form and its selected groceries.
   const [showNewOrder, setShowNewOrder] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Grocery[]>([]);
+  const [createError, setCreateError] = useState('');
 
   // This validates the driver form and sends the complete grocery order to the parent.
-  const createOrder = (event: FormEvent<HTMLFormElement>) => {
+  const createOrder = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const address = String(new FormData(event.currentTarget).get('address'));
-    if (!selectedItems.length) return;
-    onCreateOrder({ customer: 'Alex Morgan', address, createdAt: new Date().toISOString(), items: selectedItems.map((item) => ({ ...item, packed: false })), deliveryFee: 5, total: selectedItems.reduce((sum, item) => sum + item.price, 0) + 5, status: 'Order placed' });
+    if (!selectedItems.length) {
+      setCreateError('Choose at least one grocery before submitting the order.');
+      return;
+    }
+    const saved = await onCreateOrder({ customer: 'Alex Morgan', address, createdAt: new Date().toISOString(), items: selectedItems.map((item) => ({ ...item, packed: false })), deliveryFee: 5, total: selectedItems.reduce((sum, item) => sum + item.price, 0) + 5, status: 'Order placed' });
+    if (!saved) {
+      setCreateError('The order could not be saved. Start JSON Server with npm run dev.');
+      return;
+    }
     setSelectedItems([]);
     setShowNewOrder(false);
+    setCreateError('');
     event.currentTarget.reset();
   };
 
@@ -272,7 +284,7 @@ function DriverDashboard({ orders, onCreateOrder, onStatusChange, onTogglePacked
 
   // This renders the driver creation controls and the status actions for every order.
   return (
-    <DashboardShell title="Driver dashboard" subtitle="Review requests and keep customers updated." onLogout={onLogout}>
+    <DashboardShell title="Driver dashboard" subtitle="Review requests and keep customers updated.">
       <button className="primary-button new-order-button" onClick={() => setShowNewOrder((visible) => !visible)}><Package size={18} /> {showNewOrder ? 'Close order form' : 'Make a new order'}</button>
       {showNewOrder && <section className="card action-card driver-create-card">
         <p className="eyebrow">Driver controls</p><h2>Build the grocery order</h2><p>Choose the groceries and address before submitting the order.</p>
@@ -280,6 +292,7 @@ function DriverDashboard({ orders, onCreateOrder, onStatusChange, onTogglePacked
           {Object.entries(groceryCatalog).map(([category, groceries]) => <fieldset key={category}><legend>{category}</legend><div className="grocery-options">{groceries.map((grocery) => <label className="grocery-option" key={grocery.name}><input type="checkbox" checked={selectedItems.some((item) => item.name === grocery.name)} onChange={() => toggleGrocery(grocery)} /><span>{grocery.name}</span><strong>${grocery.price.toFixed(2)}</strong></label>)}</div></fieldset>)}
           <label>Delivery address<input required name="address" placeholder="Delivery address" /></label>
           <p className="delivery-fee">Delivery fee: <strong>$5.00</strong></p>
+          {createError && <p className="form-error">{createError}</p>}
           <button className="secondary-button" type="submit">Submit new order</button>
         </form>
       </section>}
@@ -301,9 +314,9 @@ function DriverDashboard({ orders, onCreateOrder, onStatusChange, onTogglePacked
 }
 
 // This wrapper keeps dashboard navigation, layout, and logout behavior consistent.
-function DashboardShell({ title, subtitle, onLogout, children }: { title: string; subtitle: string; onLogout: () => void; children: React.ReactNode }) {
+function DashboardShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   // This provides the shared dashboard heading, sign-out action, and page content area.
-  return <main className="dashboard-page"><div className="dashboard-heading"><div><p className="eyebrow">GreenRoute workspace</p><h1>{title}</h1><p>{subtitle}</p></div><button className="secondary-button" onClick={onLogout}>Sign out</button></div>{children}</main>;
+  return <main className="dashboard-page"><div className="dashboard-heading"><div><p className="eyebrow">GreenRoute workspace</p><h1>{title}</h1><p>{subtitle}</p></div></div>{children}</main>;
 }
 
 // This component loads persisted orders and restores the previous signed-in role.
@@ -327,11 +340,18 @@ export default function App() {
   const handleOrderCreated = (order: Order) => setOrders((current) => sortNewestFirst([order, ...current]));
 
   // This saves a complete driver-created order and displays it at the top of both dashboards.
-  const handleCreateOrder = async (order: Omit<Order, 'id'>) => {
-    // This guarantees every newly created order has a reliable creation timestamp.
-    const orderWithTimestamp = { ...order, createdAt: order.createdAt || new Date().toISOString() };
-    const response = await fetch(ORDERS_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderWithTimestamp) });
-    if (response.ok) handleOrderCreated(await response.json() as Order);
+  const handleCreateOrder = async (order: Omit<Order, 'id'>): Promise<boolean> => {
+    try {
+      // This guarantees every newly created order has a reliable creation timestamp.
+      const orderWithTimestamp = { ...order, createdAt: order.createdAt || new Date().toISOString() };
+      const response = await fetch(ORDERS_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderWithTimestamp) });
+      if (!response.ok) return false;
+      handleOrderCreated(await response.json() as Order);
+      return true;
+    } catch {
+      // This converts a stopped or unreachable JSON Server into a visible form error.
+      return false;
+    }
   };
 
   // This persists a driver status transition and updates both dashboard views.
@@ -356,5 +376,5 @@ export default function App() {
   };
 
   // This selects the login, customer, or driver screen based on the current session role.
-  return <><Header onNavigate={setScreen} />{screen === 'login' && <AuthPage onAuthenticated={setScreen} />}{screen === 'customer' && <CustomerDashboard orders={orders} onLogout={handleLogout} />}{screen === 'driver' && <DriverDashboard orders={orders} onCreateOrder={handleCreateOrder} onStatusChange={handleStatusChange} onTogglePacked={handleTogglePacked} onLogout={handleLogout} />}</>;
+  return <><Header onNavigate={setScreen} onLogout={handleLogout} isAuthenticated={screen !== 'login'} />{screen === 'login' && <AuthPage onAuthenticated={setScreen} />}{screen === 'customer' && <CustomerDashboard orders={orders} />}{screen === 'driver' && <DriverDashboard orders={orders} onCreateOrder={handleCreateOrder} onStatusChange={handleStatusChange} onTogglePacked={handleTogglePacked} />}</>;
 }
